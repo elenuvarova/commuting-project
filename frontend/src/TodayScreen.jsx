@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Icon } from "./icons.jsx";
 
 const RING_R = 40;
 const RING_C = 2 * Math.PI * RING_R;
@@ -86,7 +87,7 @@ export default function TodayScreen({ onStartTransition, disrupt }) {
           </div>
         </div>
 
-        <p className="crowd">🚆 {plan.crowd} · {plan.crowdHint}</p>
+        <p className="crowd"><Icon name="tram-fill" size={14} color="muted" style={{ marginRight: 5 }} />{plan.crowd} · {plan.crowdHint}</p>
 
         <div className="chip-info">
           Backup pre-picked · <strong>{plan.backup.train}</strong> {plan.backup.scheduledDeparture} → {plan.backup.scheduledArrival}
@@ -94,7 +95,9 @@ export default function TodayScreen({ onStartTransition, disrupt }) {
 
         {plan.reframe && (
           <div className="reframe">
-            <strong>{plan.reframe.message}</strong>
+            <strong style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Icon name="exclamationmark-triangle-fill" size={15} color="warning" />{plan.reframe.message}
+            </strong>
             <span>{plan.reframe.suggestion}</span>
             <button className="btn ghost" onClick={() => onStartTransition({ type: "switch_on", durationMin: 50 })}>
               Bank the 12 min → longer Switch-On

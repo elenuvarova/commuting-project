@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "./icons.jsx";
 
 const STEPS = {
   switch_on: [
@@ -75,10 +76,12 @@ export default function TransitionScreen({ handoff }) {
         <>
           <div className="mode-row">
             <button className={isOn ? "mode active" : "mode"} aria-pressed={isOn} onClick={() => setType("switch_on")}>
-              <span className="ic">☀️</span><span className="t">Switch-On</span><span className="s">Morning · ramp into work</span>
+              <span className="ic"><Icon name="sun-max-fill" size={22} color={isOn ? "primary" : "muted"} /></span>
+              <span className="t">Switch-On</span><span className="s">Morning · ramp into work</span>
             </button>
             <button className={!isOn ? "mode active" : "mode"} aria-pressed={!isOn} onClick={() => setType("switch_off")}>
-              <span className="ic">🌙</span><span className="t">Switch-Off</span><span className="s">Evening · decompress</span>
+              <span className="ic"><Icon name="moon-fill" size={22} color={!isOn ? "primary" : "muted"} /></span>
+              <span className="t">Switch-Off</span><span className="s">Evening · decompress</span>
             </button>
           </div>
           <p className="muted" style={{ fontSize: 15 }}>Matched to your ride — pick a length:</p>
@@ -134,7 +137,7 @@ export default function TransitionScreen({ handoff }) {
 
       {phase === "done" && (
         <div className="card done-card">
-          <div className="badge">✓</div>
+          <div className="badge"><Icon name="checkmark-circle-fill" size={60} color="primary" /></div>
           <h3>{isOn ? "You’re switched on." : "You’re switched off."}</h3>
           <p>{isOn ? "Arrive as work-mode. Saved to your transitions." : "Work stays on the train. Saved to your transitions."}</p>
           <button className="btn" onClick={reset}>Done</button>

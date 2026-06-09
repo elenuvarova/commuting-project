@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TodayScreen from "./TodayScreen.jsx";
 import TransitionScreen from "./TransitionScreen.jsx";
+import { Icon } from "./icons.jsx";
 
 const TOUR = [
   { view: "today", disrupt: false, eyebrow: "Step 1 · Plan", title: "Know you’ll make it",
@@ -66,7 +67,9 @@ export default function App() {
               A commute companion for hybrid workers — feel in control of an unpredictable train,
               and use the ride as a home↔work mental switch.
             </p>
-            <button className="btn sm primary" onClick={() => applyTourStep(0)}>▶ Take the tour</button>
+            <button className="btn sm primary" onClick={() => applyTourStep(0)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+              <Icon name="play-fill" size={13} color="white" />Take the tour
+            </button>
           </>
         ) : (
           <div className="about-card">
@@ -78,8 +81,8 @@ export default function App() {
               <button className="btn sm" onClick={() => (tourStep === 0 ? setTourStep(null) : applyTourStep(tourStep - 1))}>
                 {tourStep === 0 ? "Exit" : "Back"}
               </button>
-              <button className="btn sm primary" onClick={() => (tourStep < TOUR.length - 1 ? applyTourStep(tourStep + 1) : setTourStep(null))}>
-                {tourStep < TOUR.length - 1 ? "Next" : "Done"}
+              <button className="btn sm primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }} onClick={() => (tourStep < TOUR.length - 1 ? applyTourStep(tourStep + 1) : setTourStep(null))}>
+                {tourStep < TOUR.length - 1 ? <><span>Next</span><Icon name="chevron-right" size={11} color="white" /></> : "Done"}
               </button>
             </div>
           </div>

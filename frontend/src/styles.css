@@ -262,7 +262,7 @@ body {
   display: flex; flex-direction: column; gap: 4px; color: var(--text);
   font-family: inherit; transition: border-color 0.15s, background 0.15s;
 }
-.mode .ic { font-size: 22px; }
+.mode .ic { display: flex; height: 26px; align-items: center; }
 .mode .t { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; }
 .mode .s { color: var(--muted); font-size: 12px; }
 .mode.active { border-color: var(--primary); background: rgba(74, 163, 255, 0.1); }
@@ -299,7 +299,7 @@ input:focus, textarea:focus { outline: none; border-color: var(--primary); }
 
 /* done + history */
 .done-card { align-items: center; text-align: center; gap: 10px; padding: 28px 20px 24px; }
-.badge { width: 60px; height: 60px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-size: 28px; font-weight: 700; }
+.badge { width: 60px; height: 60px; display: grid; place-items: center; }
 .done-card h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
 .done-card p { color: var(--muted); font-size: 13px; }
 
