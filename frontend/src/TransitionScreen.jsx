@@ -70,6 +70,7 @@ export default function TransitionScreen({ handoff }) {
     <>
       <div className="section-label">Transition · {isOn ? "home → work" : "work → home"}</div>
 
+      <div className="phase-view" key={phase}>
       {phase === "setup" && (
         <>
           <div className="mode-row">
@@ -96,6 +97,7 @@ export default function TransitionScreen({ handoff }) {
       {phase === "running" && (
         <>
           <div className="timer-wrap">
+            <div className="timer-glow" />
             <div className="timer">{fmt(secondsLeft)}</div>
             <div className="timer-sub">{secondsLeft === 0 ? "time’s up — finish when ready" : "remaining"}</div>
           </div>
@@ -138,6 +140,7 @@ export default function TransitionScreen({ handoff }) {
           <button className="btn" onClick={reset}>Done</button>
         </div>
       )}
+      </div>
 
       <div className="section-label" style={{ marginTop: 8 }}>Past transitions</div>
       {history.length === 0 && <p className="muted" style={{ fontSize: 13 }}>No transitions yet — finish one above.</p>}

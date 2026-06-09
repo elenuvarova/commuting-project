@@ -3,16 +3,35 @@ import { useEffect, useState } from "react";
 function Ring({ pct }) {
   const r = 40, c = 2 * Math.PI * r;
   const color = pct >= 0.85 ? "var(--success)" : pct >= 0.7 ? "var(--warning)" : "var(--danger)";
+  const [offset, setOffset] = useState(c);
+  const [shown, setShown] = useState(0);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const target = c * (1 - pct);
+    if (reduce) { setOffset(target); setShown(Math.round(pct * 100)); return; }
+    const id = setTimeout(() => setOffset(target), 60);
+    let raf, start;
+    const tick = (now) => {
+      if (!start) start = now;
+      const p = Math.min(1, (now - start) / 1100);
+      setShown(Math.round(pct * 100 * p));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => { clearTimeout(id); cancelAnimationFrame(raf); };
+  }, [pct, c]);
+
   return (
     <div className="ring">
       <svg width="92" height="92" viewBox="0 0 92 92">
         <circle cx="46" cy="46" r={r} fill="none" stroke="var(--surface-2)" strokeWidth="8" />
         <circle
-          cx="46" cy="46" r={r} fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={c} strokeDashoffset={c * (1 - pct)}
+          className="prog" cx="46" cy="46" r={r} fill="none" stroke={color} strokeWidth="8"
+          strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
         />
       </svg>
-      <div className="pct">{Math.round(pct * 100)}%</div>
+      <div className="pct">{shown}%</div>
     </div>
   );
 }

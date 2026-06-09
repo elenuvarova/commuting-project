@@ -54,8 +54,11 @@ export default function App() {
                 Transition
               </button>
             </div>
-            {view === "today" && <TodayScreen onStartTransition={startTransition} />}
-            {view === "transition" && <TransitionScreen handoff={handoff} />}
+            <div className="screen-view" key={view}>
+              {view === "today"
+                ? <TodayScreen onStartTransition={startTransition} />
+                : <TransitionScreen handoff={handoff} />}
+            </div>
           </div>
           <div className="home-indicator" />
         </div>
