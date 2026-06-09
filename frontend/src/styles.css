@@ -36,12 +36,11 @@ body {
 
 /* ---- Stage + iPhone device frame ---- */
 .stage {
+  position: relative;
   min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 36px;
-  flex-wrap: wrap;
   padding: 40px 16px;
   background:
     radial-gradient(1200px 600px at 50% -10%, rgba(74, 163, 255, 0.18), transparent 60%),
@@ -207,21 +206,52 @@ body {
 }
 .toggle input { accent-color: var(--primary); }
 
-/* Side demo panel (sits beside the phone, not inside the product UI) */
+/* Side panels flank the centered phone. The phone is the only in-flow child of
+   .stage, so it stays dead-centre regardless of the panels. Narrow screens:
+   about/tour hidden, demo controls become a floating pill. Wide: cards beside it. */
+.about-panel { display: none; }
+
 .demo-panel {
-  width: 248px;
-  align-self: center;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 30;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; border-radius: 999px;
+  background: rgba(20, 26, 34, 0.92); border: 1px solid var(--border); backdrop-filter: blur(10px);
 }
-.demo-label { font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
-.demo-panel .toggle { justify-content: flex-start; color: var(--text); font-size: 15px; }
-.demo-hint { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.demo-label, .demo-hint { display: none; }
+.demo-panel .toggle { color: var(--text); font-size: 14px; }
+
+/* About + Tour (left panel) */
+.about-panel h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+.about-panel .lede { color: var(--muted); font-size: 14px; line-height: 1.55; }
+.about-card {
+  background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+  border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 10px;
+}
+.about-card .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--primary); }
+.about-card h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+.about-card p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.tour-dots { display: flex; gap: 6px; margin-top: 2px; }
+.tour-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+.tour-dots i.on { background: var(--primary); }
+.tour-nav { display: flex; gap: 8px; margin-top: 4px; }
+.btn.sm { padding: 10px 14px; font-size: 14px; border-radius: 12px; }
+
+@media (min-width: 1080px) {
+  .about-panel {
+    display: flex; flex-direction: column; gap: 14px;
+    position: absolute; top: 50%; right: calc(50% + 214px); transform: translateY(-50%);
+    width: 300px;
+  }
+  .demo-panel {
+    position: absolute; top: 50%; left: calc(50% + 214px); right: auto; bottom: auto;
+    transform: translateY(-50%);
+    width: 264px; flex-direction: column; align-items: stretch; gap: 10px;
+    padding: 18px; border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04); backdrop-filter: none;
+  }
+  .demo-label, .demo-hint { display: block; }
+  .demo-panel .toggle { justify-content: flex-start; font-size: 15px; }
+}
 
 /* transition: mode picker */
 .mode-row { display: flex; gap: 12px; }
@@ -354,15 +384,8 @@ input:focus, textarea:focus { outline: none; border-color: var(--primary); }
 
 /* On real phones: drop the frame, go full-screen */
 @media (max-width: 460px) {
-  .stage { padding: 0; background: var(--bg); gap: 0; }
+  .stage { padding: 0; background: var(--bg); }
   .phone { width: 100%; height: 100dvh; border-radius: 0; padding: 0; box-shadow: none; background: var(--bg); animation: none; }
   .screen { border-radius: 0; }
   .statusbar .island { display: none; }
-  .demo-panel {
-    position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
-    width: auto; flex-direction: row; align-items: center; gap: 10px; z-index: 30;
-    padding: 8px 14px; border-radius: 999px;
-    background: rgba(20, 26, 34, 0.92); backdrop-filter: blur(10px);
-  }
-  .demo-label, .demo-hint { display: none; }
 }

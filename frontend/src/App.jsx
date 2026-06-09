@@ -2,6 +2,17 @@ import { useState } from "react";
 import TodayScreen from "./TodayScreen.jsx";
 import TransitionScreen from "./TransitionScreen.jsx";
 
+const TOUR = [
+  { view: "today", disrupt: false, eyebrow: "Step 1 · Plan", title: "Know you’ll make it",
+    body: "Honest arrival confidence — not the inflated punctuality number — plus a pre-picked backup train and a crowd hint, before you leave." },
+  { view: "today", disrupt: true, eyebrow: "Step 2 · A delay hits", title: "Stay in control",
+    body: "Confidence drops to a calm 74%, the backup is ready, and Threshold offers to bank the 12 lost minutes into a longer Switch-On." },
+  { view: "transition", disrupt: false, eyebrow: "Step 3 · Switch-On", title: "Ramp into work",
+    body: "On the train, set the 1–3 intentions that make today a win — a guided home → work transition." },
+  { view: "transition", disrupt: false, eyebrow: "Step 4 · Arrive ready", title: "…and Switch-Off",
+    body: "A timer matched to the ride guides the transition; in the evening, Switch-Off closes the loops. Arrive ready; come home off-the-clock." },
+];
+
 function StatusBar() {
   return (
     <div className="statusbar">
@@ -31,14 +42,50 @@ export default function App() {
   const [view, setView] = useState("today");
   const [handoff, setHandoff] = useState({ type: "switch_on", durationMin: 40 });
   const [disrupt, setDisrupt] = useState(false);
+  const [tourStep, setTourStep] = useState(null);
 
   function startTransition(next) {
     setHandoff({ type: next.type ?? "switch_on", durationMin: next.durationMin ?? 40 });
     setView("transition");
   }
 
+  function applyTourStep(i) {
+    const s = TOUR[i];
+    setView(s.view);
+    setDisrupt(s.disrupt);
+    setTourStep(i);
+  }
+
   return (
     <div className="stage">
+      <aside className="about-panel">
+        {tourStep === null ? (
+          <>
+            <h2>Threshold</h2>
+            <p className="lede">
+              A commute companion for hybrid workers — feel in control of an unpredictable train,
+              and use the ride as a home↔work mental switch.
+            </p>
+            <button className="btn sm primary" onClick={() => applyTourStep(0)}>▶ Take the tour</button>
+          </>
+        ) : (
+          <div className="about-card">
+            <div className="eyebrow">{TOUR[tourStep].eyebrow}</div>
+            <h3>{TOUR[tourStep].title}</h3>
+            <p>{TOUR[tourStep].body}</p>
+            <div className="tour-dots">{TOUR.map((_, i) => <i key={i} className={i === tourStep ? "on" : ""} />)}</div>
+            <div className="tour-nav">
+              <button className="btn sm" onClick={() => (tourStep === 0 ? setTourStep(null) : applyTourStep(tourStep - 1))}>
+                {tourStep === 0 ? "Exit" : "Back"}
+              </button>
+              <button className="btn sm primary" onClick={() => (tourStep < TOUR.length - 1 ? applyTourStep(tourStep + 1) : setTourStep(null))}>
+                {tourStep < TOUR.length - 1 ? "Next" : "Done"}
+              </button>
+            </div>
+          </div>
+        )}
+      </aside>
+
       <div className="phone">
         <div className="screen">
           <StatusBar />
