@@ -30,6 +30,7 @@ function StatusBar() {
 export default function App() {
   const [view, setView] = useState("today");
   const [handoff, setHandoff] = useState({ type: "switch_on", durationMin: 40 });
+  const [disrupt, setDisrupt] = useState(false);
 
   function startTransition(next) {
     setHandoff({ type: next.type ?? "switch_on", durationMin: next.durationMin ?? 40 });
@@ -56,13 +57,24 @@ export default function App() {
             </div>
             <div className="screen-view" key={view}>
               {view === "today"
-                ? <TodayScreen onStartTransition={startTransition} />
+                ? <TodayScreen onStartTransition={startTransition} disrupt={disrupt} />
                 : <TransitionScreen handoff={handoff} />}
             </div>
           </div>
           <div className="home-indicator" />
         </div>
       </div>
+
+      <aside className="demo-panel">
+        <div className="demo-label">Prototype controls</div>
+        <label className="toggle">
+          <input type="checkbox" checked={disrupt} onChange={(e) => setDisrupt(e.target.checked)} />
+          Simulate a delay
+        </label>
+        <p className="demo-hint">
+          Flips the Today plan to a delayed train, with a reframe that banks the lost time into a longer Switch-On.
+        </p>
+      </aside>
     </div>
   );
 }

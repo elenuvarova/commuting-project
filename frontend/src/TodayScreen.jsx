@@ -39,8 +39,7 @@ function Ring({ pct }) {
   );
 }
 
-export default function TodayScreen({ onStartTransition }) {
-  const [disrupt, setDisrupt] = useState(false);
+export default function TodayScreen({ onStartTransition, disrupt }) {
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -107,11 +106,6 @@ export default function TodayScreen({ onStartTransition }) {
       <button className="btn primary" onClick={() => onStartTransition({ type: "switch_on", durationMin: 40 })}>
         Start Switch-On for this ride
       </button>
-
-      <label className="toggle">
-        <input type="checkbox" checked={disrupt} onChange={(e) => setDisrupt(e.target.checked)} />
-        Simulate a delay
-      </label>
     </>
   );
 }
