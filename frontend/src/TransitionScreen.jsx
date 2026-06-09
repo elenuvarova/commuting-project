@@ -74,17 +74,17 @@ export default function TransitionScreen({ handoff }) {
       {phase === "setup" && (
         <>
           <div className="mode-row">
-            <button className={isOn ? "mode active" : "mode"} onClick={() => setType("switch_on")}>
+            <button className={isOn ? "mode active" : "mode"} aria-pressed={isOn} onClick={() => setType("switch_on")}>
               <span className="ic">☀️</span><span className="t">Switch-On</span><span className="s">Morning · ramp into work</span>
             </button>
-            <button className={!isOn ? "mode active" : "mode"} onClick={() => setType("switch_off")}>
+            <button className={!isOn ? "mode active" : "mode"} aria-pressed={!isOn} onClick={() => setType("switch_off")}>
               <span className="ic">🌙</span><span className="t">Switch-Off</span><span className="s">Evening · decompress</span>
             </button>
           </div>
           <p className="muted" style={{ fontSize: 15 }}>Matched to your ride — pick a length:</p>
           <div className="chips">
             {DURATIONS.map((d) => (
-              <button key={d.label} className={d.label === duration.label ? "chip active" : "chip"} onClick={() => setDuration(d)}>
+              <button key={d.label} className={d.label === duration.label ? "chip active" : "chip"} aria-pressed={d.label === duration.label} onClick={() => setDuration(d)}>
                 {d.label}
               </button>
             ))}
@@ -125,7 +125,7 @@ export default function TransitionScreen({ handoff }) {
           <div className="spacer" />
           <div className="btn-row">
             <button className="btn" disabled={stepIndex === 0} onClick={() => setStepIndex((i) => i - 1)}>Back</button>
-            {stepIndex < steps.length - 1
+            {stepIndex < steps.length - 1 && secondsLeft > 0
               ? <button className="btn primary" onClick={() => setStepIndex((i) => i + 1)}>Next</button>
               : <button className="btn primary" onClick={finish} disabled={saving}>{saving ? "Saving…" : "Finish & save"}</button>}
           </div>

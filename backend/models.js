@@ -11,6 +11,7 @@ export const TransitionSession = sequelize.define("TransitionSession", {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 40,
+    validate: { min: 1, max: 600 },
   },
   intentions: {
     type: DataTypes.JSON,
@@ -20,6 +21,7 @@ export const TransitionSession = sequelize.define("TransitionSession", {
   note: {
     type: DataTypes.TEXT,
     allowNull: true,
+    validate: { len: [0, 1000] },
   },
   completed: {
     type: DataTypes.BOOLEAN,

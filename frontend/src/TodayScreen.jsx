@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
+const RING_R = 40;
+const RING_C = 2 * Math.PI * RING_R;
+
 function Ring({ pct }) {
-  const r = 40, c = 2 * Math.PI * r;
+  const r = RING_R, c = RING_C;
   const color = pct >= 0.85 ? "var(--success)" : pct >= 0.7 ? "var(--warning)" : "var(--danger)";
   const [offset, setOffset] = useState(c);
   const [shown, setShown] = useState(0);
@@ -20,7 +23,7 @@ function Ring({ pct }) {
     };
     raf = requestAnimationFrame(tick);
     return () => { clearTimeout(id); cancelAnimationFrame(raf); };
-  }, [pct, c]);
+  }, [pct]);
 
   return (
     <div className="ring">

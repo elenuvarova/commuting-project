@@ -47,10 +47,10 @@ export default function App() {
               <div className="tagline">Know you’ll make it. Arrive ready.</div>
             </header>
             <div className="tabs">
-              <button className={view === "today" ? "active" : ""} onClick={() => setView("today")}>
+              <button className={view === "today" ? "active" : ""} aria-pressed={view === "today"} onClick={() => setView("today")}>
                 Today
               </button>
-              <button className={view === "transition" ? "active" : ""} onClick={() => setView("transition")}>
+              <button className={view === "transition" ? "active" : ""} aria-pressed={view === "transition"} onClick={() => setView("transition")}>
                 Transition
               </button>
             </div>
