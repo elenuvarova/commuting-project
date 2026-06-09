@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+backend/public/
+.env
+.env.local
+*.log
+.DS_Store
+*.sqlite
+*.sqlite-journal
+
+.playwright-mcp/
