@@ -11,7 +11,8 @@ hybrid worker who commutes Antwerp → Brussels a few times a week. Two linked m
 - When a delay hits, it offers to **bank the lost time** into a longer transition instead of into stress.
 
 Positioned as a companion to the NMBS/SNCB app. Built on a minimal React + Express + Sequelize stack that
-runs locally with zero setup and deploys free on Render. *Tagline: "Know you'll make it. Arrive ready."*
+runs locally with zero setup and deploys as a single Docker container on a self-hosted Coolify server.
+*Tagline: "Know you'll make it. Arrive ready."*
 
 > **Project docs:** the assignment, the research, and the full UX deliverables (persona, insights,
 > "How might we", Crazy-8, converged concept, 3-min video script) live in [docs/](docs/) —
@@ -21,8 +22,8 @@ runs locally with zero setup and deploys free on Render. *Tagline: "Know you'll 
 
 - **Frontend:** React 18 + Vite 5 (JavaScript)
 - **Backend:** Node.js + Express (ES modules)
-- **Database:** Sequelize ORM — SQLite for local dev, PostgreSQL on Render (picked automatically from `DATABASE_URL`)
-- **Deploy:** Render free tier (free web service + free Postgres)
+- **Database:** Sequelize ORM — SQLite for local dev, PostgreSQL in production (picked automatically from `DATABASE_URL`)
+- **Deploy:** Self-hosted on Coolify (Hetzner) — single Docker container, auto-deploy on push to `main`
 
 ## Project structure
 
@@ -31,7 +32,7 @@ runs locally with zero setup and deploys free on Render. *Tagline: "Know you'll 
 ├── backend/
 │   ├── package.json
 │   ├── server.js          # API: /api/today, /api/sessions, /api/health
-│   ├── db.js              # Sequelize: SQLite locally, Postgres on Render
+│   ├── db.js              # Sequelize: SQLite locally, Postgres in production
 │   └── models.js          # TransitionSession model
 ├── frontend/
 │   ├── package.json
@@ -45,7 +46,6 @@ runs locally with zero setup and deploys free on Render. *Tagline: "Know you'll 
 │       └── styles.css
 ├── docs/                  # UX project: brief, research, deliverables, screenshots
 ├── Dockerfile
-├── render.yaml
 ├── .env.example
 ├── .gitignore
 ├── .dockerignore
@@ -76,15 +76,12 @@ Open [http://localhost:5173](http://localhost:5173). The frontend proxies `/api`
 port 3001. Try the **Simulate a delay** toggle on the Today screen to see the disruption-reframe, and pick
 **Demo · 20s** on the Transition screen to watch a full session in 20 seconds.
 
-## Deploy to Render
+## Deploy
 
-1. Push this repo to GitHub.
-2. In Render: **New → Blueprint** → connect your repo.
-3. Render reads `render.yaml` and provisions the free web service and free Postgres automatically.
-   `DATABASE_URL` is injected into the app — no copy/paste required.
-
-**Free tier notes:** the web service sleeps after inactivity (first request ~30s cold start); Render's free
-Postgres expires after 90 days and must be recreated.
+Self-hosted as a single Docker container on **Coolify** (Hetzner VPS), live at
+**[commute-app.ontwrpn.com](https://commute-app.ontwrpn.com)**. Coolify builds the `Dockerfile` and
+auto-deploys on every push to `main`. Set `DATABASE_URL` (Coolify-internal Postgres) in the app's
+environment variables; left blank, the app runs on SQLite.
 
 ## Endpoints
 

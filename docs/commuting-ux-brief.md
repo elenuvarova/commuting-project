@@ -108,7 +108,7 @@ UX done end-to-end **and a real working app prototype**. Adaptation:
     else (analysis, HMW, ideation, concept, prototype, video). Research below is useful either way.
 - **Working prototype escalates the paper step.** The converged concept becomes a real
   **React + Vite + Express + Sequelize** app on the template in this repo — runnable locally,
-  deployable free on Render.
+  deployed as a Docker container on a self-hosted Coolify server.
 - **Concept is TBD by research.** We do not pre-commit to the course's heart-rate idea; the
   opportunity should fall out of the research + insight.
 

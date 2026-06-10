@@ -156,8 +156,8 @@ step-by-step. Tappable hotspots: Today → confidence → start transition → f
    the guided steps; the session + the day's **3 intentions** persist to the DB (Sequelize), with a short
    **history** of past transitions.
 
-Built on the repo's React + Vite + Express + Sequelize template — runnable locally (SQLite), deployable free
-on Render (Postgres). Spec/build tracked separately.
+Built on the repo's React + Vite + Express + Sequelize template — runnable locally (SQLite), deployed as a
+Docker container on a self-hosted Coolify server (Postgres). Spec/build tracked separately.
 
 ## 9. Final video script (≤3 min, English)
 

@@ -1,5 +1,5 @@
 // Dialect is picked from DATABASE_URL so the same config works locally (SQLite)
-// and on Render (Postgres) without any code changes.
+// and in production (Postgres) without any code changes.
 import { Sequelize } from "sequelize";
 
 let sequelize;
