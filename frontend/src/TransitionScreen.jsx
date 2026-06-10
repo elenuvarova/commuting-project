@@ -41,9 +41,20 @@ export default function TransitionScreen({ handoff }) {
     fetch("/api/sessions").then((r) => (r.ok ? r.json() : [])).then(setHistory).catch(() => setHistory([]));
 
   useEffect(() => { loadHistory(); }, []);
+  // Re-sync from a fresh handoff (e.g. the delay reframe hands off a 50-min Switch-On).
+  useEffect(() => {
+    const d = DURATIONS.find((x) => x.min === handoff.durationMin) || DURATIONS[0];
+    setType(handoff.type); setDuration(d); setSecondsLeft(d.sec); setStepIndex(0); setPhase("setup");
+  }, [handoff]);
   useEffect(() => {
     if (phase !== "running") return;
-    intervalRef.current = setInterval(() => setSecondsLeft((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    intervalRef.current = setInterval(
+      () => setSecondsLeft((s) => {
+        if (s <= 1) { clearInterval(intervalRef.current); return 0; }
+        return s - 1;
+      }),
+      1000
+    );
     return () => clearInterval(intervalRef.current);
   }, [phase]);
 
@@ -64,7 +75,7 @@ export default function TransitionScreen({ handoff }) {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       clearInterval(intervalRef.current);
       setPhase("done"); loadHistory();
-    } catch (err) { setSaveError(err); } finally { setSaving(false); }
+    } catch (err) { setSaveError(err instanceof Error ? err : new Error(String(err))); } finally { setSaving(false); }
   }
 
   return (

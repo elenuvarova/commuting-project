@@ -50,7 +50,9 @@ export default function TodayScreen({ onStartTransition, disrupt }) {
     setError(null);
     fetch(`/api/today${disrupt ? "?disrupt=1" : ""}`)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-      .then(setPlan).catch(setError).finally(() => setLoading(false));
+      .then(setPlan)
+      .catch((e) => setError(e instanceof Error ? e : new Error(String(e))))
+      .finally(() => setLoading(false));
   }, [disrupt]);
 
   if (loading) return <p className="muted">Checking your line…</p>;
@@ -100,7 +102,7 @@ export default function TodayScreen({ onStartTransition, disrupt }) {
             </strong>
             <span>{plan.reframe.suggestion}</span>
             <button className="btn ghost" onClick={() => onStartTransition({ type: "switch_on", durationMin: 50 })}>
-              Bank the 12 min → longer Switch-On
+              Bank it → longer Switch-On
             </button>
           </div>
         )}

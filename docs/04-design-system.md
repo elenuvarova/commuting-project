@@ -94,11 +94,12 @@ gradient, center %, colored by level) · TripRow · BackupChip · Pill (on/off) 
 
 Pages: **Cover · 🎨 Foundations · 🧩 Components · 📐 Wireframes (low-fi) · ✨ UI — Dark · ✨ UI — Light**.
 
-- **Tokens:** `Primitives` (35 colors incl. Hoppit neutrals) + `Spacing` (17 numbers) + `Theme` (16 semantic
+- **Tokens:** `Primitives` (28 colors incl. neutral greys) + `Spacing` (19 numbers) + `Theme` (16 semantic
   colors × **3 modes**: Wireframe / Light / Dark). Scopes + WEB `var(--token)` code syntax set.
-- **Text styles:** 11-step SF Pro iOS ramp.
-- **Components:** StatusBar, HomeIndicator, Button (Primary/Secondary), Chip (Default/Active), SegmentedTabs,
-  Pill (On/Off), TextField — all colour-bound to semantic tokens.
+- **Text styles:** 14-style SF Pro iOS ramp (Display → Caption, incl. Subhead Emphasized).
+- **Components:** StatusBar, HomeIndicator, SegmentedTabs, Button (8 variants), Chip, Pill, TextField, plus the
+  ConfidenceRing, PlanCard, ModeCard, ReframeCard, InfoChip, HistoryItem molecules and an inline-SVG SF Symbols
+  Icon set (10 glyphs) — all colour-bound to semantic tokens.
 - **Screens:** 5 screens (Today on-time / Today delay+reframe / Transition setup / running / done), each on
   a 402×874 iPhone frame, built **once** and shown in all three modes by switching the frame's Theme mode —
   Wireframe page uses the **Hoppit neutral palette** (status bar #1A1A1A, surfaces #F2F2F2/#FFFFFF), Dark &
