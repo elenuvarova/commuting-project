@@ -9,15 +9,13 @@ const url = process.env.DATABASE_URL || "";
 
 if (url.startsWith("postgres://") || url.startsWith("postgresql://")) {
   dbKind = "postgres";
+  // Coolify-internal Postgres runs on the private Docker network without SSL;
+  // external managed Postgres (e.g. Neon) needs SSL and carries ?sslmode=require.
+  const needsSsl = /sslmode=require/i.test(url);
   sequelize = new Sequelize(url, {
     dialect: "postgres",
     logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
+    dialectOptions: needsSsl ? { ssl: { require: true, rejectUnauthorized: false } } : {},
   });
 } else {
   dbKind = "sqlite";
