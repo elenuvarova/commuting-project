@@ -18,7 +18,7 @@
 - **A typical office morning:** The night before / over breakfast he runs the same loop — *"Is it even
   worth going in today? Who's actually in? What's the first meeting?"* Checks the SNCB app, sees the 8:42 is
   fine, leaves, then the train is 7 min late and packed (since the 4→3/hour cut). He answers Slack on his
-  phone, half-watches the window, and arrives at his 9:00 standup still feeling like he's "catching up,"
+  phone, half-watches the window, and arrives at his 09:30 standup still feeling like he's "catching up,"
   not switched-on.
 - **WFH days:** No commute at all — work bleeds straight into the kitchen; he ends the day without ever
   having "left work."
@@ -87,7 +87,7 @@ Eight ideas, one per minute, mode-aware (each line = the sketch you'd draw):
 
 1. **Go / No-go card** — one morning screen: who's in the office, in-person meetings, weather, live line
    status → *"Worth going in. Leave by 8:18 for the 8:42."* (kills the "should I go in" loop)
-2. **Honest arrival confidence** — not the inflated 90% punctuality but a personal *"92% you make your 9:00
+2. **Honest arrival confidence** — not the inflated 90% punctuality but a personal *"92% you make your 09:30
    standup,"* with delay/skip/crowd risk shown and a **backup train pre-picked.** (restores control)
 3. **Crowd radar** — which departures/carriages are likely full (the 4→3 cut); *"board car 3, it's
    emptier."* (targets *felt* crowding = personal-space proximity)

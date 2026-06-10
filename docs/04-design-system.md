@@ -54,8 +54,8 @@ Wireframe keeps success/warning/danger as grays → screens read as true graysca
 black, surfaces light-gray). Light/Dark light up the accent + state colors.
 
 ### Spacing / radius / size (Number)
-`space/4·8·12·16·20·24·32·40` · `radius/sm 10 · md 16 · lg 20 · xl 28 · pill 999` ·
-`size/statusbar 59 · size/tap 44 · size/home 34` · `stroke/hairline 1`.
+`space/2·4·8·12·16·20·24·32·40` · `radius/sm 12 · md 16 · lg 20 · xl 28 · pill 999` ·
+`size/statusbar 59 · size/tap 44 · size/home 34` · `stroke/hairline 1 · stroke/emphasis 2` (19 vars).
 
 ## Type styles — SF Pro ramp (iOS)
 | Style | Family/Weight | Size | Line | Tracking |
@@ -71,6 +71,9 @@ black, surfaces light-gray). Light/Dark light up the accent + state colors.
 | Footnote | SF Pro Regular | 13 | 18 | 0 |
 | Caption | SF Pro Regular | 12 | 16 | 0 |
 | Overline | SF Pro Semibold | 11 | 13 | +0.6 (UPPERCASE) |
+| Control | SF Pro Semibold | 13 | 16 | -0.1 |
+| Subhead Emphasized | SF Pro Semibold | 15 | 20 | -0.2 |
+| Display | SF Pro Bold | 64 | 64 | -2.0 |
 
 ## Components (atoms → molecules)
 StatusBar (iOS, time + DI + indicators) · HomeIndicator · SegmentedTabs (Today/Transition) · Button
@@ -92,7 +95,8 @@ gradient, center %, colored by level) · TripRow · BackupChip · Pill (on/off) 
 
 **File:** https://www.figma.com/design/aJRy71rHbxzfzXQ5qQf6h6 (key `aJRy71rHbxzfzXQ5qQf6h6`).
 
-Pages: **Cover · 🎨 Foundations · 🧩 Components · 📐 Wireframes (low-fi) · ✨ UI — Dark · ✨ UI — Light**.
+One page (`🚆 Threshold — Design System & UI`) with six sections:
+**🖼 Cover · 🎨 Foundations · 🧩 Components · 📐 Wireframes · 🌙 UI — Dark · ☀️ UI — Light**.
 
 - **Tokens:** `Primitives` (28 colors incl. neutral greys) + `Spacing` (19 numbers) + `Theme` (16 semantic
   colors × **3 modes**: Wireframe / Light / Dark). Scopes + WEB `var(--token)` code syntax set.
@@ -102,8 +106,8 @@ Pages: **Cover · 🎨 Foundations · 🧩 Components · 📐 Wireframes (low-fi
   Icon set (10 glyphs) — all colour-bound to semantic tokens.
 - **Screens:** 5 screens (Today on-time / Today delay+reframe / Transition setup / running / done), each on
   a 402×874 iPhone frame, built **once** and shown in all three modes by switching the frame's Theme mode —
-  Wireframe page uses the **Hoppit neutral palette** (status bar #1A1A1A, surfaces #F2F2F2/#FFFFFF), Dark &
-  Light pages are the finished UI (sky/violet accents, teal/amber confidence ring).
+  the Wireframes section uses the **neutral grey palette** (bg/statusbar #FFFFFF, surfaces #F0F2F5/#E3E7EC,
+  text #1C1F24), the Dark & Light sections are the finished UI (sky/violet accents, teal/amber confidence ring).
 
 **Font handling (important):** Figma's headless MCP renderer lists SF Pro but has no metrics for it, so the
 in-plugin layout engine measures SF Pro text as 0-width (collapsing auto-layout). Workaround used: every

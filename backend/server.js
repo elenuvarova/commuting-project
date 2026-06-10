@@ -64,7 +64,7 @@ app.get("/api/today", (req, res) => {
       delayMin: 12,
       leaveBy: "08:24",
       arrivalConfidence: 0.74,
-      headline: "Heads up — IC 1832 is +12 min. You'll still make your standup with the backup.",
+      headline: "Heads up — IC 1832 is +12 min. Still 74% you make the 09:30 — backup locked in just in case.",
       reframe: {
         message: "That's 12 minutes you didn't plan for. Bank them?",
         suggestion: "Start a longer Switch-On and use the extra time to prep your standup.",

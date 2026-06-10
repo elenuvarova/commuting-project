@@ -7,7 +7,7 @@ const TOUR = [
   { view: "today", disrupt: false, eyebrow: "Step 1 · Plan", title: "Know you’ll make it",
     body: "Honest arrival confidence — not the inflated punctuality number — plus a pre-picked backup train and a crowd hint, before you leave." },
   { view: "today", disrupt: true, eyebrow: "Step 2 · A delay hits", title: "Stay in control",
-    body: "Confidence drops to a calm 74%, the backup is ready, and Threshold offers to bank the 12 lost minutes into a longer Switch-On." },
+    body: "Confidence drops to a calm 74%, the backup is ready, and Threshold offers to bank the lost minutes into a longer Switch-On." },
   { view: "transition", disrupt: false, eyebrow: "Step 3 · Switch-On", title: "Ramp into work",
     body: "On the train, set the 1–3 intentions that make today a win — a guided home → work transition." },
   { view: "transition", disrupt: false, eyebrow: "Step 4 · Arrive ready", title: "…and Switch-Off",

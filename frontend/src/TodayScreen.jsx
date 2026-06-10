@@ -46,13 +46,18 @@ export default function TodayScreen({ onStartTransition, disrupt }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const ctrl = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`/api/today${disrupt ? "?disrupt=1" : ""}`)
+    fetch(`/api/today${disrupt ? "?disrupt=1" : ""}`, { signal: ctrl.signal })
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
       .then(setPlan)
-      .catch((e) => setError(e instanceof Error ? e : new Error(String(e))))
-      .finally(() => setLoading(false));
+      .catch((e) => {
+        if (e.name === "AbortError") return;
+        setError(e instanceof Error ? e : new Error(String(e)));
+      })
+      .finally(() => { if (!ctrl.signal.aborted) setLoading(false); });
+    return () => ctrl.abort();
   }, [disrupt]);
 
   if (loading) return <p className="muted">Checking your line…</p>;

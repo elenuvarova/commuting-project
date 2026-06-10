@@ -19,6 +19,10 @@ if (url.startsWith("postgres://") || url.startsWith("postgresql://")) {
   });
 } else {
   dbKind = "sqlite";
+  if (process.env.NODE_ENV === "production") {
+    // Container filesystems are ephemeral — without DATABASE_URL all data is lost on redeploy.
+    console.warn("WARNING: running in production on SQLite (DATABASE_URL not set) — data will not persist across deploys.");
+  }
   sequelize = new Sequelize({
     dialect: "sqlite",
     storage: process.env.SQLITE_PATH || "./data.sqlite",

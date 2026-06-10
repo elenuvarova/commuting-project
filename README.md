@@ -43,6 +43,7 @@ runs locally with zero setup and deploys as a single Docker container on a self-
 │       ├── App.jsx            # tab shell (Today / Transition)
 │       ├── TodayScreen.jsx    # Plan: arrival confidence + backup + delay reframe
 │       ├── TransitionScreen.jsx  # Switch-On/Off timer, intentions, history
+│       ├── icons.jsx          # SF Symbols as inline SVG (one Icon component)
 │       └── styles.css
 ├── docs/                  # UX project: brief, research, deliverables, screenshots
 ├── Dockerfile

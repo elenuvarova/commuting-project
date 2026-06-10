@@ -113,7 +113,7 @@ export default function TransitionScreen({ handoff }) {
           <div className="timer-wrap">
             <div className="timer-glow" />
             <div className="timer">{fmt(secondsLeft)}</div>
-            <div className="timer-sub">{secondsLeft === 0 ? "time’s up — finish when ready" : "remaining"}</div>
+            <div className="timer-sub" aria-live="polite">{secondsLeft === 0 ? "time’s up — finish when ready" : "remaining"}</div>
           </div>
           <div className="progress"><div className="bar" style={{ width: `${100 - (secondsLeft / duration.sec) * 100}%` }} /></div>
           <div className="card step">
@@ -123,14 +123,14 @@ export default function TransitionScreen({ handoff }) {
             {steps[stepIndex].input === "intentions" && (
               <div className="fields">
                 {intentions.map((val, i) => (
-                  <input key={i} placeholder={`Intention ${i + 1}`} value={val}
+                  <input key={i} placeholder={`Intention ${i + 1}`} aria-label={`Intention ${i + 1}`} value={val}
                     onChange={(e) => { const n = [...intentions]; n[i] = e.target.value; setIntentions(n); }} />
                 ))}
               </div>
             )}
             {steps[stepIndex].input === "note" && (
               <div className="fields">
-                <textarea rows={2} placeholder={isOn ? "Your opening line…" : "Tomorrow’s first task…"}
+                <textarea rows={2} placeholder={isOn ? "Your opening line…" : "Tomorrow’s first task…"} aria-label={isOn ? "Your opening line" : "Tomorrow's first task"}
                   value={note} onChange={(e) => setNote(e.target.value)} />
               </div>
             )}

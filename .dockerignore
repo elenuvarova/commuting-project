@@ -7,3 +7,7 @@ build
 .git
 *.log
 .DS_Store
+*.sqlite
+*.sqlite-journal
+docs
+.playwright-mcp
