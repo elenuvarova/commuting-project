@@ -20,8 +20,10 @@ if (url.startsWith("postgres://") || url.startsWith("postgresql://")) {
 } else {
   dbKind = "sqlite";
   if (process.env.NODE_ENV === "production") {
-    // Container filesystems are ephemeral — without DATABASE_URL all data is lost on redeploy.
-    console.warn("WARNING: running in production on SQLite (DATABASE_URL not set) — data will not persist across deploys.");
+    // Production must use Postgres (DATABASE_URL). SQLite in a container is ephemeral —
+    // fail loudly instead of silently accepting writes that vanish on the next redeploy.
+    console.error("FATAL: production requires Postgres — set DATABASE_URL. Refusing to start on ephemeral SQLite.");
+    process.exit(1);
   }
   sequelize = new Sequelize({
     dialect: "sqlite",

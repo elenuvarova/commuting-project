@@ -5,6 +5,8 @@ import { randomUUID } from "crypto";
 import { DataTypes } from "sequelize";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import compression from "compression";
+import morgan from "morgan";
 import { sequelize, dbKind } from "./db.js";
 import { TransitionSession } from "./models.js";
 
@@ -13,6 +15,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.set("trust proxy", 1);
+app.use(morgan("combined")); // request logging
+app.use(compression()); // gzip responses (incl. the static SPA bundle)
 app.use(
   helmet({
     contentSecurityPolicy: {
