@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { randomUUID } from "crypto";
+import { DataTypes } from "sequelize";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { sequelize, dbKind } from "./db.js";
@@ -163,6 +164,18 @@ if (process.env.NODE_ENV === "production") {
 
 async function start() {
   await sequelize.sync();
+  // Self-healing migration: plain sync() won't add the ownerKey column to a
+  // pre-existing (Postgres) table, so add it if missing. Idempotent, dialect-agnostic.
+  try {
+    const tableName = TransitionSession.getTableName();
+    const cols = await sequelize.getQueryInterface().describeTable(tableName);
+    if (!cols.ownerKey) {
+      await sequelize.getQueryInterface().addColumn(tableName, "ownerKey", { type: DataTypes.STRING, allowNull: true });
+      console.log("migration: added ownerKey column");
+    }
+  } catch (err) {
+    console.error("ownerKey column ensure failed:", err);
+  }
   app.listen(PORT, () => {
     console.log(`db: ${dbKind}`);
     console.log(`Server running on port ${PORT}`);
