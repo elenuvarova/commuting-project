@@ -124,7 +124,8 @@ body {
   background: var(--surface-2); border-radius: var(--r-md);
 }
 .tabs button {
-  flex: 1; border: 0; cursor: pointer; padding: 8px 0;
+  flex: 1; border: 0; cursor: pointer; padding: 8px 0; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
   border-radius: 10px; background: transparent; color: var(--muted);
   font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: -0.2px;
   transition: background 0.2s, color 0.2s;
@@ -198,13 +199,24 @@ body {
 .btn:disabled { opacity: 0.45; cursor: default; }
 .btn-row { display: flex; gap: 12px; }
 
+/* Keyboard focus: a token-bound ring on every interactive control (inputs style their own). */
+.tabs button:focus-visible,
+.btn:focus-visible,
+.mode:focus-visible,
+.chips .chip:focus-visible,
+.toggle input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .spacer { display: none; }
 
 .toggle {
   display: flex; align-items: center; gap: 8px; justify-content: center;
+  min-height: 44px;
   color: var(--muted); font-size: 13px; cursor: pointer; user-select: none;
 }
-.toggle input { accent-color: var(--primary); }
+.toggle input { accent-color: var(--primary); width: 22px; height: 22px; }
 
 /* Side panels flank the centered phone. The phone is the only in-flow child of
    .stage, so it stays dead-centre regardless of the panels. Narrow screens:
@@ -271,7 +283,9 @@ body {
 .chips .chip {
   border: 1px solid var(--border); background: var(--surface-2);
   color: var(--muted); border-radius: var(--r-pill);
-  padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer;
+  padding: 8px 16px; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500; cursor: pointer;
   font-family: inherit;
 }
 .chips .chip.active { border-color: var(--primary); color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, transparent); }
@@ -326,13 +340,15 @@ input:focus, textarea:focus { outline: none; border-color: var(--primary); }
 
 .phone { animation: phoneIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
-.screen-view { display: flex; flex-direction: column; gap: 20px; animation: viewEnter 0.34s ease both; }
-.screen-view > * { animation: fadeUp 0.44s ease both; }
-.screen-view > *:nth-child(1) { animation-delay: 0.02s; }
-.screen-view > *:nth-child(2) { animation-delay: 0.07s; }
-.screen-view > *:nth-child(3) { animation-delay: 0.12s; }
-.screen-view > *:nth-child(4) { animation-delay: 0.17s; }
-.screen-view > *:nth-child(5) { animation-delay: 0.22s; }
+.screen-view { display: flex; flex-direction: column; }
+.screen-pane { display: flex; flex-direction: column; gap: 20px; animation: viewEnter 0.34s ease both; }
+.screen-pane[hidden] { display: none; }
+.screen-pane > * { animation: fadeUp 0.44s ease both; }
+.screen-pane > *:nth-child(1) { animation-delay: 0.02s; }
+.screen-pane > *:nth-child(2) { animation-delay: 0.07s; }
+.screen-pane > *:nth-child(3) { animation-delay: 0.12s; }
+.screen-pane > *:nth-child(4) { animation-delay: 0.17s; }
+.screen-pane > *:nth-child(5) { animation-delay: 0.22s; }
 
 .phase-view { display: contents; }
 .phase-view > * { animation: fadeUp 0.4s ease both; }
@@ -383,9 +399,17 @@ input:focus, textarea:focus { outline: none; border-color: var(--primary); }
 }
 
 /* On real phones: drop the frame, go full-screen */
-@media (max-width: 460px) {
+/* Real phones — drop the frame and go full-screen. Also triggers on short/landscape
+   viewports (height ≤ 600px) so a landscape phone isn't clipped to ~40% of the screen. */
+@media (max-width: 460px), (max-height: 600px) {
   .stage { padding: 0; background: var(--bg); }
   .phone { width: 100%; height: 100dvh; border-radius: 0; padding: 0; box-shadow: none; background: var(--bg); animation: none; }
-  .screen { border-radius: 0; }
-  .statusbar .island { display: none; }
+  /* Let the real OS status bar + home indicator show through; inset the app so content
+     clears the notch. Hiding the fake chrome avoids two clocks / two home bars on a real phone. */
+  .screen {
+    border-radius: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .statusbar, .home-indicator { display: none; }
 }

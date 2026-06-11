@@ -2,6 +2,12 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "./db.js";
 
 export const TransitionSession = sequelize.define("TransitionSession", {
+  // Anonymous per-browser owner (set from an httpOnly cookie) so a visitor only
+  // ever reads/writes their own transitions — never the global list.
+  ownerKey: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   type: {
     type: DataTypes.STRING,
     allowNull: false,

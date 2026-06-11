@@ -20,6 +20,9 @@ WORKDIR /app/backend
 COPY backend/ .
 COPY --from=backend-deps /app/backend/node_modules ./node_modules
 COPY --from=frontend-build /app/frontend/dist ./public
+# Drop root: run the app as the built-in non-root `node` user (defense in depth).
+RUN chown -R node:node /app
+USER node
 EXPOSE 3001
 # Container health: probe the app's /api/health (busybox wget ships with alpine).
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \

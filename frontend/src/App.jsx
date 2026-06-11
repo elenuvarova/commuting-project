@@ -94,10 +94,15 @@ export default function App() {
                 Transition
               </button>
             </div>
-            <div className="screen-view" key={view}>
-              {view === "today"
-                ? <TodayScreen onStartTransition={startTransition} disrupt={disrupt} />
-                : <TransitionScreen handoff={handoff} />}
+            <div className="screen-view">
+              {/* Both screens stay mounted; we hide the inactive one so an
+                  in-progress Transition (timer, typed intentions) survives a tab switch. */}
+              <div className="screen-pane" hidden={view !== "today"}>
+                <TodayScreen onStartTransition={startTransition} disrupt={disrupt} />
+              </div>
+              <div className="screen-pane" hidden={view !== "transition"}>
+                <TransitionScreen handoff={handoff} />
+              </div>
             </div>
           </div>
           <div className="home-indicator" />

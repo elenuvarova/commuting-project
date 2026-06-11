@@ -6,7 +6,7 @@ const STEPS = {
     { title: "Land", body: "You’re on board. One slow breath. The trip is handled — your only job now is to arrive ready." },
     { title: "Set 3 intentions", body: "What are the 1–3 things that would make today a win?", input: "intentions" },
     { title: "Rehearse your first moment", body: "Picture your 09:30 standup. What’s your one opening line?", input: "note" },
-    { title: "Focus", body: "Headphones on. The rest of the ride is yours — we’ll nudge you 3 min before Brussel-Centraal." },
+    { title: "Focus", body: "Headphones on. The rest of the ride is yours — the timer counts you down to Brussel-Centraal." },
   ],
   switch_off: [
     { title: "Close the loops", body: "What did you actually get done today? Name it and let it count." },
@@ -139,7 +139,7 @@ export default function TransitionScreen({ handoff }) {
           <div className="spacer" />
           <div className="btn-row">
             <button className="btn" disabled={stepIndex === 0} onClick={() => setStepIndex((i) => i - 1)}>Back</button>
-            {stepIndex < steps.length - 1 && secondsLeft > 0
+            {stepIndex < steps.length - 1
               ? <button className="btn primary" onClick={() => setStepIndex((i) => i + 1)}>Next</button>
               : <button className="btn primary" onClick={finish} disabled={saving}>{saving ? "Saving…" : "Finish & save"}</button>}
           </div>

@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import { randomUUID } from "crypto";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import { sequelize, dbKind } from "./db.js";
@@ -28,6 +29,27 @@ app.use(
   })
 );
 app.use(express.json({ limit: "16kb" }));
+
+// Anonymous per-browser identity: an httpOnly cookie scopes each visitor to their own
+// transition history, so /api/sessions never leaks one user's intentions to another.
+app.use((req, res, next) => {
+  const cookies = Object.fromEntries(
+    (req.headers.cookie || "")
+      .split(";")
+      .map((c) => c.trim().split("="))
+      .filter(([k]) => k)
+      .map(([k, ...v]) => [k, decodeURIComponent(v.join("="))])
+  );
+  let key = cookies.tk;
+  if (!key || !/^[0-9a-f-]{36}$/i.test(key)) {
+    key = randomUUID();
+    const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+    res.append("Set-Cookie", `tk=${key}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax${secure}`);
+  }
+  req.ownerKey = key;
+  next();
+});
+
 app.use("/api", rateLimit({ windowMs: 60_000, max: 120, standardHeaders: true, legacyHeaders: false }));
 
 app.get("/api/health", async (req, res) => {
@@ -85,7 +107,11 @@ app.get("/api/today", (req, res) => {
 
 app.get("/api/sessions", async (req, res) => {
   try {
-    const sessions = await TransitionSession.findAll({ order: [["createdAt", "DESC"]], limit: 20 });
+    const sessions = await TransitionSession.findAll({
+      where: { ownerKey: req.ownerKey },
+      order: [["createdAt", "DESC"]],
+      limit: 20,
+    });
     res.json(sessions.map((s) => s.toJSON()));
   } catch (err) {
     console.error("list sessions failed:", err);
@@ -107,6 +133,7 @@ app.post("/api/sessions", async (req, res) => {
     const cleanNote = typeof note === "string" ? note.slice(0, 1000) : null;
 
     const session = await TransitionSession.create({
+      ownerKey: req.ownerKey,
       type,
       durationMin: cleanDuration,
       intentions: cleanIntentions,
@@ -124,9 +151,13 @@ app.post("/api/sessions", async (req, res) => {
 app.use("/api", (req, res) => res.status(404).json({ status: "error", message: "not found" }));
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "public")));
+  const pub = path.join(__dirname, "public");
+  // Vite assets are content-hashed → safe to cache for a year; the HTML shell must revalidate.
+  app.use("/assets", express.static(path.join(pub, "assets"), { maxAge: "1y", immutable: true }));
+  app.use(express.static(pub, { maxAge: 0 }));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    res.set("Cache-Control", "no-cache");
+    res.sendFile(path.join(pub, "index.html"));
   });
 }
 

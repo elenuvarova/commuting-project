@@ -17,7 +17,7 @@ const ICONS = {
 };
 const COLOR = {
   white: '#fff',
-  muted: 'color-mix(in srgb, var(--text) 55%, transparent)',
+  muted: 'var(--muted)',
   primary: 'var(--primary)',
   warning: 'var(--warning)',
   success: 'var(--success)',

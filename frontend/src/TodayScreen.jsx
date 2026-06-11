@@ -27,15 +27,15 @@ function Ring({ pct }) {
   }, [pct]);
 
   return (
-    <div className="ring">
-      <svg width="92" height="92" viewBox="0 0 92 92">
+    <div className="ring" role="img" aria-label={`Arrival confidence ${Math.round(pct * 100)} percent`}>
+      <svg width="92" height="92" viewBox="0 0 92 92" aria-hidden="true">
         <circle cx="46" cy="46" r={r} fill="none" stroke="var(--surface-2)" strokeWidth="8" />
         <circle
           className="prog" cx="46" cy="46" r={r} fill="none" stroke={color} strokeWidth="8"
           strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
         />
       </svg>
-      <div className="pct">{shown}%</div>
+      <div className="pct" aria-hidden="true">{shown}%</div>
     </div>
   );
 }
