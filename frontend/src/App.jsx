@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodayScreen from "./TodayScreen.jsx";
 import TransitionScreen from "./TransitionScreen.jsx";
 import { Icon } from "./icons.jsx";
@@ -31,8 +31,38 @@ function StatusBar() {
 export default function App() {
   const [view, setView] = useState("today");
   const [handoff, setHandoff] = useState({ type: "switch_on", durationMin: 40 });
-  const [disrupt, setDisrupt] = useState(false);
+  const [manualDisrupt, setManualDisrupt] = useState(false);
   const [tourStep, setTourStep] = useState(null);
+
+  // Theme: "auto" follows the OS; "light"/"dark" force a choice. We resolve to a concrete
+  // appearance, set it on <html data-theme>, persist the preference, and live-update when
+  // the OS flips while on "auto". The toggle lives in the web chrome (see render), not the app.
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem("threshold-theme") || "auto"; } catch { return "auto"; }
+  });
+  const [resolvedDark, setResolvedDark] = useState(true);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const dark = theme === "auto" ? mq.matches : theme === "dark";
+      setResolvedDark(dark);
+      document.documentElement.dataset.theme = dark ? "dark" : "light";
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [theme]);
+  useEffect(() => {
+    try {
+      if (theme === "auto") localStorage.removeItem("threshold-theme");
+      else localStorage.setItem("threshold-theme", theme);
+    } catch { /* private mode — preference just won't persist */ }
+  }, [theme]);
+  const toggleTheme = () => setTheme(resolvedDark ? "light" : "dark");
+  // During the tour the phone reflects the current step's disruption; otherwise it follows
+  // the manual "Simulate a delay" checkbox. Deriving it means the tour never ticks the
+  // user's checkbox, and exiting the tour restores their manual choice automatically.
+  const disrupt = tourStep !== null ? TOUR[tourStep].disrupt : manualDisrupt;
 
   function startTransition(next) {
     setHandoff({ type: next.type ?? "switch_on", durationMin: next.durationMin ?? 40 });
@@ -40,14 +70,22 @@ export default function App() {
   }
 
   function applyTourStep(i) {
-    const s = TOUR[i];
-    setView(s.view);
-    setDisrupt(s.disrupt);
+    setView(TOUR[i].view);
     setTourStep(i);
   }
 
   return (
     <div className="stage">
+      <button
+        className="theme-toggle"
+        onClick={toggleTheme}
+        aria-pressed={!resolvedDark}
+        aria-label={resolvedDark ? "Switch to light theme" : "Switch to dark theme"}
+        title={resolvedDark ? "Switch to light theme" : "Switch to dark theme"}
+      >
+        <Icon name={resolvedDark ? "sun-max-fill" : "moon-fill"} size={18} color="text" />
+      </button>
+
       <aside className="about-panel">
         {tourStep === null ? (
           <>
@@ -112,7 +150,7 @@ export default function App() {
       <aside className="demo-panel">
         <div className="demo-label">Prototype controls</div>
         <label className="toggle">
-          <input type="checkbox" checked={disrupt} onChange={(e) => setDisrupt(e.target.checked)} />
+          <input type="checkbox" checked={manualDisrupt} onChange={(e) => setManualDisrupt(e.target.checked)} />
           Simulate a delay
         </label>
         <p className="demo-hint">

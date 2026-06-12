@@ -158,14 +158,21 @@ export default function TransitionScreen({ handoff }) {
 
       <div className="section-label" style={{ marginTop: 8 }}>Past transitions</div>
       {history.length === 0 && <p className="muted" style={{ fontSize: 13 }}>No transitions yet — finish one above.</p>}
-      {history.map((h) => (
-        <div key={h.id} className="history-item">
-          <span className={h.type === "switch_on" ? "pill on" : "pill off"}>{h.type === "switch_on" ? "Switch-On" : "Switch-Off"}</span>
-          <span className="dur">{h.durationMin} min</span>
-          {Array.isArray(h.intentions) && h.intentions.length > 0 && <span className="det">· {h.intentions.join(" · ")}</span>}
-          {h.note && <span className="det">· {h.note}</span>}
-        </div>
-      ))}
+      {history.map((h) => {
+        const hasIntentions = Array.isArray(h.intentions) && h.intentions.length > 0;
+        return (
+          <div key={h.id} className="history-item">
+            <span className={h.type === "switch_on" ? "pill on" : "pill off"}>{h.type === "switch_on" ? "Switch-On" : "Switch-Off"}</span>
+            {/* durationMin 1 is only ever the "Demo · 20s" length — show it honestly, not as "1 min". */}
+            <span className="dur">{h.durationMin === 1 ? "Demo" : `${h.durationMin} min`}</span>
+            {hasIntentions && <span className="det">· {h.intentions.join(" · ")}</span>}
+            {h.note && <span className="det">· {h.note}</span>}
+            {!hasIntentions && !h.note && (
+              <span className="det" style={{ color: "var(--muted)" }}>· {h.type === "switch_on" ? "no intentions set" : "no notes"}</span>
+            )}
+          </div>
+        );
+      })}
     </>
   );
 }
