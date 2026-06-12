@@ -17,6 +17,7 @@ const ICONS = {
 };
 const COLOR = {
   white: '#fff',
+  'on-primary': 'var(--on-primary)',
   muted: 'var(--muted)',
   primary: 'var(--primary)',
   warning: 'var(--warning)',

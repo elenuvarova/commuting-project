@@ -57,7 +57,7 @@ export default function App() {
               and use the ride as a home↔work mental switch.
             </p>
             <button className="btn sm primary" onClick={() => applyTourStep(0)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
-              <Icon name="play-fill" size={13} color="white" />Take the tour
+              <Icon name="play-fill" size={13} color="on-primary" />Take the tour
             </button>
           </>
         ) : (
@@ -71,7 +71,7 @@ export default function App() {
                 {tourStep === 0 ? "Exit" : "Back"}
               </button>
               <button className="btn sm primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }} onClick={() => (tourStep < TOUR.length - 1 ? applyTourStep(tourStep + 1) : setTourStep(null))}>
-                {tourStep < TOUR.length - 1 ? <><span>Next</span><Icon name="chevron-right" size={11} color="white" /></> : "Done"}
+                {tourStep < TOUR.length - 1 ? <><span>Next</span><Icon name="chevron-right" size={11} color="on-primary" /></> : "Done"}
               </button>
             </div>
           </div>
