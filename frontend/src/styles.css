@@ -220,7 +220,8 @@ body {
   min-height: 44px;
   color: var(--muted); font-size: 13px; cursor: pointer; user-select: none;
 }
-/* Custom checkbox so the tick is white on the blue fill (native accent-color picks a dark tick). */
+/* Custom checkbox: the tick uses --on-primary so it matches the Take-the-tour icon/text
+   on the same blue fill (dark in Dark mode, white in Light) instead of the native dark tick. */
 .toggle input {
   appearance: none; -webkit-appearance: none; margin: 0;
   width: 22px; height: 22px; flex: 0 0 auto;
@@ -231,7 +232,7 @@ body {
 .toggle input:checked { background: var(--primary); border-color: var(--primary); }
 .toggle input:checked::before {
   content: ""; width: 6px; height: 11px; margin-top: -2px;
-  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+  border: solid var(--on-primary); border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
 
 /* Side panels flank the centered phone. The phone is the only in-flow child of
